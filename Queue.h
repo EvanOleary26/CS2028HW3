@@ -19,8 +19,8 @@ public:
     Queue() : first(nullptr), last(nullptr), size(0) {};
 
 	//Functions
-	void enqueue(T inVal);   //Add an item to the bottom of the Queue
-	T dequeue();             //Remove an item from the top of the Queue, then return it   
+	void enqueue(T inVal);   //Add an item to the front of the Queue
+	T dequeue();             //Remove an item from the back of the Queue, then return it   
 	T peek();                //Look at the top item of the Queue
 	bool isEmpty();          //Check if the Queue is empty
     int length();            //Returns the total amount of items in the Queue

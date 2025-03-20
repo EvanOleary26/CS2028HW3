@@ -15,7 +15,7 @@ private:
 
 public:
 	//Constructors
-	Stack() : SIZE(inSize) { items = T *[5]; }	//Not totally sure if this is gonna work might need fixing
+	Stack() : SIZE(inSize) { items = new T *[5]; }	//Not totally sure if this is gonna work might need fixing
 
 	//Functions
 	void push(T inVal);		//Add an item to the Stack

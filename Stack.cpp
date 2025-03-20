@@ -5,7 +5,7 @@
 template <typename T>
 void Stack<T>::push(T inVal) {
 	if (index < SIZE) {
-		words[index] = inChar;
+		items[index] = inChar;
 		index++;
 	}
 	else {
@@ -17,8 +17,7 @@ void Stack<T>::push(T inVal) {
 template <typename T>
 T Stack<T>::pop() {
 	if (index > 0) {
-		index--;
-		return items[index];
+		return items[index--];
 	}
 	else {
 		throw Underflow("Stack Underflow", 0);
