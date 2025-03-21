@@ -4,12 +4,11 @@
 #include <iostream>
 
 class Card {
-    private:
+    public:
         std::string cardType;
         std::string suit;
         int cardVal = 0;
 
-    public:
         //Constructors
         Card() : cardType(""), suit(""), cardVal(0) {};
         Card(std::string inType, std::string inSuit, int inCardVal) : cardType(inType), suit(inSuit), cardVal(inCardVal) {}; 
