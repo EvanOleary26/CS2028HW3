@@ -82,6 +82,21 @@ void round(int& turns) {
 	Card playerCard = PlayerHand.dequeue();
 	Card computerCard = ComputerHand.dequeue();
 	// show player their card and give them their options (stack or play)
+	int playOption = 0;
+	playerCard.display();
+	std::cout << "1. Play\n2. Stack" << std::endl;
+	std::cin >> playOption;
+
+	while (!(playOption == 1 || playOption == 2)) {
+		std::cout << "Please enter a valid option" << std::endl;
+		std::cin >> playOption;
+	}
+
+	if (playOption == 2) {
+		Sidepile.push(playerCard);
+		playerCard = PlayerHand.dequeue(); //new card that must be played
+	}
+
 	if (playerCard.cardVal > computerCard.cardVal) {
 		PlayerHand.enqueue(playerCard);
 		PlayerHand.enqueue(computerCard);
