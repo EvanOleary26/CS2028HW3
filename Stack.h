@@ -1,3 +1,4 @@
+
 #pragma once
 #ifndef __STACK_HPP
 #define __STACK_HPP
@@ -10,14 +11,19 @@ template <typename T>
 class Stack {
 private:
 	int SIZE = 5;
-	T *items;
+	T* items;
 	int index;
 
 public:
 	//Constructors
-	Stack() : SIZE(5), index(0) { 
-		items = new T[SIZE]; 
+	Stack() : SIZE(size), index(0) {
+		items = new T[SIZE];
 	}
+	/* we need to make a constructor where size can be changed for the war stack
+	Stack(size) : SIZE(size), index(0) {
+		items = new T[SIZE]
+	}
+	*/
 
 	//Functions
 	void push(T inVal);		//Add an item to the Stack

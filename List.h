@@ -27,7 +27,7 @@ public:
     bool IsEmpty();
     int Size();
     T SeeNext();
-    T SeePrev();
+    //T SeePrev(); //getting an error bc there's no definition for this funtion in list.cpp
     T SeeAt(int target);
     void Reset();
     void DisplayList();
