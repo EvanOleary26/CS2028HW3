@@ -118,83 +118,122 @@ void initCardPile(Queue<Card>& Drawpile) {
 	std::string suit;
 	for (int v = 2; v < 15; v++) {
 		switch (v) {
-		case 2: {
-			name = "Two";
-			break;
-		}
-		case 3: {
-			name = "Three";
-			break;
-		}
-		case 4: {
-			name = "Four";
-			break;
-		}
-		case 5: {
-			name = "Five";
-			break;
-		}
-		case 6: {
-			name = "Six";
-			break;
-		}
-		case 7: {
-			name = "Seven";
-			break;
-		}
-		case 8: {
-			name = "Eight";
-			break;
-		}
-		case 9: {
-			name = "Nine";
-			break;
-		}
-		case 10: {
-			name = "Ten";
-			break;
-		}
-		case 11: {
-			name = "Jack";
-			break;
-		}
-		case 12: {
-			name = "Queen";
-			break;
-		}
-		case 13: {
-			name = "King";
-			break;
-		}
-		case 14: {
-			name = "Ace";
-			break;
-		}
+            case 2: {
+                name = "Two";
+                break;
+            }
+            case 3: {
+                name = "Three";
+                break;
+            }
+            case 4: {
+                name = "Four";
+                break;
+            }
+            case 5: {
+                name = "Five";
+                break;
+            }
+            case 6: {
+                name = "Six";
+                break;
+            }
+            case 7: {
+                name = "Seven";
+                break;
+            }
+            case 8: {
+                name = "Eight";
+                break;
+            }
+            case 9: {
+                name = "Nine";
+                break;
+            }
+            case 10: {
+                name = "Ten";
+                break;
+            }
+            case 11: {
+                name = "Jack";
+                break;
+            }
+            case 12: {
+                name = "Queen";
+                break;
+            }
+            case 13: {
+                name = "King";
+                break;
+            }
+            case 14: {
+                name = "Ace";
+                break;
+            }
 		}
 		for (int s = 0; s < 4; s++) {
 			switch (s) {
-			case 0: {
-				suit = "Spades";
-				break;
-			}
-			case 1: {
-				suit = "Hearts";
-				break;
-			}
-			case 2: {
-				suit = "Clubs";
-				break;
-			}
-			case 3: {
-				suit = "Diamonds";
-				break;
-			}
+                case 0: {
+                    suit = "Spades";
+                    break;
+                }
+                case 1: {
+                    suit = "Hearts";
+                    break;
+                }
+                case 2: {
+                    suit = "Clubs";
+                    break;
+                }
+                case 3: {
+                    suit = "Diamonds";
+                    break;
+                }
 			}
 			Card* tempCard = new Card(name, suit, v);
 			//std::cout << tempCard->display() << std::endl;
 			Drawpile.enqueue(*tempCard);
 		}
 	}
+}
+
+void shuffle(Queue<Card> &Drawpile,Queue<Card> &PlayerHand, Queue<Card> &ComputerHand) {
+    //Currently not working will come back to work on this
+    
+    int pileSize = Drawpile.length();   //Get size of Draw pile
+
+    //Create a random number between 0 and size of Drawpile
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, pileSize);
+    
+    Card tempArr[52];
+
+    bool addPlayerHand = true;
+
+    //Get an array of all the cards in the draw pile
+    for (int i{}; i < pileSize; i++) {
+        tempArr[i] = Drawpile.dequeue();
+    }
+
+    int randomValue = distrib(gen);
+    for (int i{}; i < pileSize; i++) {
+       
+            if (tempArr[randomValue] != 0){
+                if (addPlayerHand) {
+                    PlayerHand.enqueue(tempArr[randomValue]);
+                    tempArr[randomValue].cardVal = 0;
+                    addPlayerHand = false;
+                } else {
+                    ComputerHand.enqueue(tempArr[randomValue]);
+                    tempArr[randomValue].cardVal = 0; 
+                    addPlayerHand = true;
+                }
+            }
+            while (tempArr[randomValue] == 0) {
+                randomValue = distrib(gen);
+            }   
+    }
 }
 
 int main() {
@@ -206,8 +245,19 @@ int main() {
 	//sidePile = Sidepile();
 
 	initCardPile(Drawpile); //link just does to the function in this doc
-	//shuffle function
+	/*
+    shuffle(Drawpile, PlayerHand, ComputerHand);//shuffle function
 
+    std::cout << "Player Hand: " << std::endl;
+    while(!PlayerHand.isEmpty()) {
+        std::cout << PlayerHand.dequeue().display() << std::endl;
+    }
+
+    std::cout << "Computer Hand: " << std::endl;
+    while(!PlayerHand.isEmpty()) {
+        std::cout << ComputerHand.dequeue().display() << std::endl;
+    }
+    */
 	bool handIsEmpty = false;
 	int turns = 0;
 

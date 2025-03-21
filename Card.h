@@ -27,6 +27,24 @@ class Card {
             card.display(); // Call display() to output card details
             return os;
         }
+
+        bool operator>(const Card& right) const{
+            return this->cardVal > right.cardVal;
+        }
+        bool operator<(const Card& right) const{
+            return this->cardVal < right.cardVal;
+        }
+        bool operator==(const Card& right) const{
+            return this->cardVal == right.cardVal;
+        }
+        bool operator==(int right) const{
+            return this->cardVal == right;
+        }
+        bool operator!=(int right) const{
+            return this->cardVal != right;
+        }
+        
+
 };
 
 
