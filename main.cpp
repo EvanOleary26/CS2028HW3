@@ -14,7 +14,71 @@ Queue<Card> ComputerHand{};
 Queue<Card> Drawpile{};
 Stack<Card> WarStack{};
 
-void round(int &turns) {
+void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
+	if (PlayerHand.length() < 3) {
+		//while loop to pick up as many cards as needed
+		//do a subtraction to figure out how many cards to pull from the side pile
+		//if the side pile is empty, the player loses
+		if (PlayerHand.length() == 2) {
+			if (Sidepile.length() < 1) {
+				//computer wins game
+			}
+			else {
+				PlayerHand.enqueue(Sidepile.pop());
+			}
+		}
+		else if (PlayerHand.length() == 1) {
+			if (Sidepile.length() < 2) {
+				//computer wins game
+			}
+			else {
+				PlayerHand.enqueue(Sidepile.pop());
+				PlayerHand.enqueue(Sidepile.pop());
+			}
+		}
+		else if (PlayerHand.length() == 0) {
+			if (Sidepile.length() < 3) {
+				//computer wins game
+			}
+			else {
+				PlayerHand.enqueue(Sidepile.pop());
+				PlayerHand.enqueue(Sidepile.pop());
+				PlayerHand.enqueue(Sidepile.pop());
+			}
+		}
+	}	
+	Card playerCard1 = PlayerHand.dequeue();
+	Card playerCard2 = PlayerHand.dequeue();
+	Card playerCard3 = PlayerHand.dequeue();
+	Card computerCard1 = ComputerHand.dequeue();
+	Card computerCard2 = ComputerHand.dequeue();
+	Card computerCard3 = ComputerHand.dequeue();
+
+	int ComputerCardSum = computerCard1.cardVal + computerCard2.cardVal + computerCard3.cardVal;
+	int PlayerCardSum = playerCard1.cardVal + playerCard2.cardVal + playerCard3.cardVal;
+
+	WarStack.push(playerCard1);
+	WarStack.push(playerCard2);
+	WarStack.push(playerCard3);
+	WarStack.push(computerCard1);
+	WarStack.push(computerCard2);
+	WarStack.push(computerCard3);
+
+	if (PlayerCardSum > ComputerCardSum) {
+		//player wins war
+		while (!(WarStack.length() == 0)) {
+			PlayerHand.enqueue(WarStack.pop());
+		}
+	}
+	else {
+		//computer wins war
+		while (!(WarStack.length() == 0)) {
+			ComputerHand.enqueue(WarStack.pop());
+		}
+	}
+}
+
+void round(int& turns) {
 	Card playerCard = PlayerHand.dequeue();
 	Card computerCard = ComputerHand.dequeue();
 	// show player their card and give them their options (stack or play)
@@ -29,176 +93,93 @@ void round(int &turns) {
 	else { //if the cards are equal //this can be looped somehow
 		WarStack.push(playerCard);
 		WarStack.push(computerCard);
-		war(); 
+		war();
 	}
 	turns++;
 }
 
-void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
-	if (PlayerHand.length() >= 3) {
-		WarStack.push(PlayerHand.dequeue()); //playerWarCard1
-		WarStack.push(PlayerHand.dequeue()); //playerWarCard2
-		WarStack.push(ComputerHand.dequeue()); //computerWarCard1
-		WarStack.push(ComputerHand.dequeue()); //computerWarCard2
-
-		Card playerContestCard = PlayerHand.dequeue();  //playerWarCard3
-		Card computerContestCard = ComputerHand.dequeue(); //computerWarCard3
-
-		if (playerContestCard.cardVal > computerContestCard.cardVal) {
-			//player wins war
-			PlayerHand.enqueue(playerContestCard);
-			PlayerHand.enqueue(computerContestCard);
-			while (!(WarStack.length() == 0)) {
-				PlayerHand.enqueue(WarStack.pop());
-			}
+void initCardPile(Queue<Card>& Drawpile) {
+	std::string name;
+	std::string suit;
+	for (int v = 2; v < 15; v++) {
+		switch (v) {
+		case 2: {
+			name = "Two";
+			break;
 		}
-		else if (playerContestCard.cardVal < computerContestCard.cardVal) {
-			//computer wins war
-			ComputerHand.enqueue(playerContestCard);
-			ComputerHand.enqueue(computerContestCard);
-			while (!(WarStack.length() == 0)) {
-				ComputerHand.enqueue(WarStack.pop());
-			}
+		case 3: {
+			name = "Three";
+			break;
 		}
-		else {
-			//we need a war stack to handle all these extra cards before recursion
-			WarStack.push(playerContestCard);
-			WarStack.push(computerContestCard);
-			war();
-		} //double war
-	} else { //loop to pull from the stack
-		//while loop to pick up as many cards as possible
-		//do a subtraction to figure out how many cards to pull from the side pile
-		//if the side pile is empty, the player loses
-		if (PlayerHand.length() == 2) {
-			if (Sidepile.length() < 1) {
-				//computer wins
-			}
-			else {
-				PlayerHand.enqueue(Sidepile.pop());
-			}
+		case 4: {
+			name = "Four";
+			break;
 		}
-		else if (PlayerHand.length() == 1) {
-			if (Sidepile.length() < 2) {
-				//computer wins
-			}
-			else {
-				PlayerHand.enqueue(Sidepile.pop());
-				PlayerHand.enqueue(Sidepile.pop());
-			}
+		case 5: {
+			name = "Five";
+			break;
 		}
-		else if (PlayerHand.length() == 0) {
-			if (Sidepile.length() < 3) {
-				//computer wins
-			}
-			else {
-				PlayerHand.enqueue(Sidepile.pop());
-				PlayerHand.enqueue(Sidepile.pop());
-				PlayerHand.enqueue(Sidepile.pop());
-			}
+		case 6: {
+			name = "Six";
+			break;
 		}
-		WarStack.push(PlayerHand.dequeue()); //playerWarCard1
-		WarStack.push(PlayerHand.dequeue()); //playerWarCard2
-		WarStack.push(ComputerHand.dequeue()); //computerWarCard1
-		WarStack.push(ComputerHand.dequeue()); //computerWarCard2
-
-		Card playerContestCard = PlayerHand.dequeue();  //playerWarCard3
-		Card computerContestCard = ComputerHand.dequeue(); //computerWarCard3
-
-		if (playerContestCard.cardVal > computerContestCard.cardVal) {
-			//player wins war
-			PlayerHand.enqueue(playerContestCard);
-			PlayerHand.enqueue(computerContestCard);
-			while (!(WarStack.length() == 0)) {
-				PlayerHand.enqueue(WarStack.pop());
-			}
+		case 7: {
+			name = "Seven";
+			break;
 		}
-		else if (playerContestCard.cardVal < computerContestCard.cardVal) {
-			//computer wins war
-			ComputerHand.enqueue(playerContestCard);
-			ComputerHand.enqueue(computerContestCard);
-			while (!(WarStack.length() == 0)) {
-				ComputerHand.enqueue(WarStack.pop());
-			}
+		case 8: {
+			name = "Eight";
+			break;
 		}
-		else {
-			//we need a war stack to handle all these extra cards before recursion
-			WarStack.push(playerContestCard);
-			WarStack.push(computerContestCard);
-			war();
-		} //double war
-}
-
-void initCardPile() {
-		//not exactly sure where this would go but this would be the loop
-		// w3schools.com/cpp/cpp_switch.asp
-
-		for (int v = 2; v < 15; v++) {
-			std::string name;
-			std::string suit;
-			switch (v) {
+		case 9: {
+			name = "Nine";
+			break;
+		}
+		case 10: {
+			name = "Ten";
+			break;
+		}
+		case 11: {
+			name = "Jack";
+			break;
+		}
+		case 12: {
+			name = "Queen";
+			break;
+		}
+		case 13: {
+			name = "King";
+			break;
+		}
+		case 14: {
+			name = "Ace";
+			break;
+		}
+		}
+		for (int s = 0; s < 4; s++) {
+			switch (s) {
+			case 0: {
+				suit = "Spades";
+				break;
+			}
+			case 1: {
+				suit = "Hearts";
+				break;
+			}
 			case 2: {
-				name = "Two";
+				suit = "Clubs";
 				break;
 			}
 			case 3: {
-				name = "Three";
-				break;
-			}
-			case 4: {
-				name = "Four";
-				break;
-			}
-			case 5: {
-				name = "Five";
-				break;
-			}
-			case 6: {
-				name = "Six";
-				break;
-			}
-			case 7: {
-				name = "Seven";
-				break;
-			}
-			case 8: {
-				name = "Eight";
-				break;
-			}
-			case 9: {
-				name = "Nine";
-				break;
-			}
-			case 10: {
-				name = "Ten";
-				break;
-			}
-			case 11: {
-				name = "Jack";
-				break;
-			}
-			case 12: {
-				name = "Queen";
-				break;
-			}
-			case 13: {
-				name = "King";
-				break;
-			}
-			case 14: {
-				name = "Ace";
+				suit = "Diamonds";
 				break;
 			}
 			}
-			for (int s = 0; s < 4; s++) {
-				if (s == 0) { suit = "Spades"; }
-				else if (s == 1) { suit = "Hearts"; }
-				else if (s == 2) { suit = "Clubs"; }
-				else if (s == 3) { suit = "Diamonds"; }
-				Card Card(name, suit, v);
-				Drawpile.enqueue(Card); //depends on if we put this inside the queue or not
-			}
+			Card* tempCard = new Card(name, suit, v);
+			//std::cout << tempCard->display() << std::endl;
+			Drawpile.enqueue(*tempCard);
 		}
+	}
 }
 
 int main() {
@@ -209,7 +190,7 @@ int main() {
 	//computerHand = ComputerHand();
 	//sidePile = Sidepile();
 
-	initCardPile(); //link just does to the function in this doc
+	initCardPile(Drawpile); //link just does to the function in this doc
 	//shuffle function
 
 	bool handIsEmpty = false;
