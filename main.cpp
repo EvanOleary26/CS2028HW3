@@ -3,6 +3,7 @@
 #include "Stack.h"
 #include "Exceptions.h"
 #include "Card.h"
+#include "List.h"
 
 #include <iostream>
 #include <string>
@@ -11,7 +12,7 @@
 Stack<Card> Sidepile{};
 Queue<Card> PlayerHand{};
 Queue<Card> ComputerHand{};
-Queue<Card> Drawpile{};
+List<Card> Drawpile{};
 Stack<Card> WarStack{};
 
 void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
@@ -113,7 +114,7 @@ void round(int& turns) {
 	turns++;
 }
 
-void initCardPile(Queue<Card>& Drawpile) {
+void initCardPile(List<Card>& Drawpile) {
 	std::string name;
 	std::string suit;
 	for (int v = 2; v < 15; v++) {
@@ -192,72 +193,67 @@ void initCardPile(Queue<Card>& Drawpile) {
 			}
 			Card* tempCard = new Card(name, suit, v);
 			//std::cout << tempCard->display() << std::endl;
-			Drawpile.enqueue(*tempCard);
+			Drawpile.AddItem(*tempCard);
 		}
 	}
 }
 
-void shuffle(Queue<Card> &Drawpile,Queue<Card> &PlayerHand, Queue<Card> &ComputerHand) {
+void shuffle(List<Card> &Drawpile,Queue<Card> &PlayerHand, Queue<Card> &ComputerHand) {
     //Currently not working will come back to work on this
     
-    int pileSize = Drawpile.length();   //Get size of Draw pile
+    int pileSize = Drawpile.Size();   //Get size of Draw pile
 
     //Create a random number between 0 and size of Drawpile
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(0, pileSize);
-    
-    Card tempArr[52];
 
-    bool addPlayerHand = true;
+    bool addToPlayerHand = true;
 
-    //Get an array of all the cards in the draw pile
-    for (int i{}; i < pileSize; i++) {
-        tempArr[i] = Drawpile.dequeue();
-    }
-
-    int randomValue = distrib(gen);
-    for (int i{}; i < pileSize; i++) {
-       
-            if (tempArr[randomValue] != 0){
-                if (addPlayerHand) {
-                    PlayerHand.enqueue(tempArr[randomValue]);
-                    tempArr[randomValue].cardVal = 0;
-                    addPlayerHand = false;
-                } else {
-                    ComputerHand.enqueue(tempArr[randomValue]);
-                    tempArr[randomValue].cardVal = 0; 
-                    addPlayerHand = true;
-                }
-            }
-            while (tempArr[randomValue] == 0) {
-                randomValue = distrib(gen);
-            }   
+    while (pileSize != 0) {
+        std::uniform_int_distribution<> distrib(0, pileSize-1);
+        int randomValue = distrib(gen);
+        //std::cout << "The size of the pile " << pileSize << std::endl;
+        //std::cout << "Looking for card at index " << randomValue << std::endl;
+        if (addToPlayerHand) {
+            PlayerHand.enqueue(Drawpile.GetItemAt(randomValue));
+            addToPlayerHand = false;
+        } else {
+            ComputerHand.enqueue(Drawpile.GetItemAt(randomValue));
+            addToPlayerHand = true;
+        }
+        pileSize = Drawpile.Size();
     }
 }
 
 int main() {
 
-	// constructors (i see this is python syntax)
+	//constructors (i see this is python syntax)
 	//drawpile = Drawpile();
 	//playerHand = PlayerHand();
 	//computerHand = ComputerHand();
 	//sidePile = Sidepile();
 
 	initCardPile(Drawpile); //link just does to the function in this doc
-	/*
-    shuffle(Drawpile, PlayerHand, ComputerHand);//shuffle function
+	try {
+        shuffle(Drawpile, PlayerHand, ComputerHand);//shuffle function
 
-    std::cout << "Player Hand: " << std::endl;
-    while(!PlayerHand.isEmpty()) {
-        std::cout << PlayerHand.dequeue().display() << std::endl;
-    }
+        std::cout << "Player Hand: " << std::endl;
+        std::cout << "Size: " << PlayerHand.length() << std::endl;
+        while(!PlayerHand.isEmpty()) {
+            std::cout << PlayerHand.dequeue().display() << std::endl;
+        }
 
-    std::cout << "Computer Hand: " << std::endl;
-    while(!PlayerHand.isEmpty()) {
-        std::cout << ComputerHand.dequeue().display() << std::endl;
+        std::cout << "\nComputer Hand: " << std::endl;
+        std::cout << "Size: " << ComputerHand.length() << std::endl;
+        while(!ComputerHand.isEmpty()) {
+            std::cout << ComputerHand.dequeue().display() << std::endl;
+        }
+    } 
+    catch(Exception &e){
+        std::cout << e.errorMessage << " : " << e.errorNumber << std::endl;
     }
-    */
+    
+    
 	bool handIsEmpty = false;
 	int turns = 0;
 
