@@ -5,37 +5,49 @@
 //Add an item to the front of the Queue
 template <class T>
 void Queue<T>::enqueue(T inVal) {
-    //Needs to be updated for linked list
-    Node *temp = new Node(inVal);
-    if (first == nullptr) {
-        //Check if queue is empty
-        first = temp;
-        last = temp;
-    } else {
-        first->next = temp->next;
-        first = temp;
+    Node<T> *temp = new Node<T>(inVal);
+temp->next = first;
+    first = temp;
+    size++;
+    if (last == nullptr) {
+        last = first;
     }
 }
 
 //Remove an item from the back of the Queue, then return it
 template <class T>
 T Queue<T>::dequeue() {
-    //Needs to be updated for linked list
+    Node<T> *temp = first;
     if (last == nullptr) {
         //Check if the queue is empty
-        throw Exception("Queue Underflow", 1);
+        throw Exception(1, "Queue Underflow");
+    } else if (first == last) {
+        //Check if there is only one item in the Queue
+        T retVal = first->data;
+        first = nullptr;
+        last = nullptr;
+        size--;
+        return retVal;
     } else {
         //Remove the last item in the Queue
+        while (temp->next != last) {
+            temp = temp->next;
+        }
+        T retVal = temp->next->data;
+        temp->next = nullptr;
+        last = temp;
+        size--;
+        return retVal;
     }
 }
 
 //Look at the top item of the Queue
 template <class T>
-T Queue<T>::peek() {    //Not totally sure if this is all right
+T Queue<T>::peek() {
     if (!isEmpty()) {
-        throw Exception("Queue Underflow", 1);
+        throw Exception(1, "Queue Underflow");
     } else {
-        return last;
+        return last->data;
     }
 }
 
@@ -52,4 +64,4 @@ int Queue<T>::length() {
 }
 
 //Base template
-
+template class Queue<Card>;

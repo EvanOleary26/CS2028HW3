@@ -5,11 +5,11 @@
 template <typename T>
 void Stack<T>::push(T inVal) {
 	if (index < SIZE) {
-		items[index] = inChar;
+		items[index] = inVal;
 		index++;
 	}
 	else {
-		throw Overflow("Stack Overflow", 0);
+		throw Exception(0, "Stack Overflow");
 	}
 }
 
@@ -20,7 +20,7 @@ T Stack<T>::pop() {
 		return items[index--];
 	}
 	else {
-		throw Underflow("Stack Underflow", 0);
+		throw Exception(0, "Stack Underflow");
 	}
 }
 
@@ -43,3 +43,4 @@ void Stack<T>::emptyStack() {
 }
 
 //Base templates 
+template class Stack<Card>;

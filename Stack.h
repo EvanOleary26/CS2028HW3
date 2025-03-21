@@ -10,12 +10,14 @@ template <typename T>
 class Stack {
 private:
 	int SIZE = 5;
-	T items;
+	T *items;
 	int index;
 
 public:
 	//Constructors
-	Stack() : SIZE(inSize) { items = new T *[5]; }	//Not totally sure if this is gonna work might need fixing
+	Stack() : SIZE(5), index(0) { 
+		items = new T[SIZE]; 
+	}
 
 	//Functions
 	void push(T inVal);		//Add an item to the Stack
