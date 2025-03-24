@@ -7,7 +7,7 @@
 #include "Card.h"
 
 //Stack made up of an array
-template <typename T>
+template <class T>
 class Stack {
 private:
 	int SIZE = 5;
@@ -16,14 +16,13 @@ private:
 
 public:
 	//Constructors
-	Stack() : SIZE(size), index(0) {
+	Stack() : SIZE(5), index(0) {
 		items = new T[SIZE];
 	}
-	/* we need to make a constructor where size can be changed for the war stack
-	Stack(size) : SIZE(size), index(0) {
-		items = new T[SIZE]
+	Stack(int inSize) : SIZE(inSize), index(0) {
+		items = new T[SIZE];
 	}
-	*/
+	
 
 	//Functions
 	void push(T inVal);		//Add an item to the Stack

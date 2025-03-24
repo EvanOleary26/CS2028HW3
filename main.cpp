@@ -13,7 +13,7 @@ Stack<Card> Sidepile{};
 Queue<Card> PlayerHand{};
 Queue<Card> ComputerHand{};
 List<Card> Drawpile{};
-Stack<Card> WarStack{};
+Stack<Card> WarStack(10);
 
 void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
 	if (PlayerHand.length() < 3) {
@@ -94,9 +94,10 @@ void round(int& turns) {
 	}
 
 	if (playOption == 2) {
-		Sidepile.push(playerCard);
+		WarStack.push(playerCard);
 		playerCard = PlayerHand.dequeue(); //new card that must be played
 		std::cout << "Player has stacked their card.\nThe new card is " << playerCard.display() << std::endl;
+		std::cout << "The size of the stack is: " << WarStack.length() << std::endl;
 	}
 
 	if (playerCard.cardVal > computerCard.cardVal) {

@@ -2,7 +2,7 @@
 #include "Stack.h"
 
 //Add an item to the Stack
-template <typename T>
+template <class T>
 void Stack<T>::push(T inVal) {
 	if (index < SIZE) {
 		items[index] = inVal;
@@ -14,7 +14,7 @@ void Stack<T>::push(T inVal) {
 }
 
 //Remove item from the Stack, return item removed from the Stack
-template <typename T>
+template <class T>
 T Stack<T>::pop() {
 	if (index > 0) {
 		return items[index--];
@@ -25,19 +25,19 @@ T Stack<T>::pop() {
 }
 
 //Returns the top item in the Stack
-template <typename T>
+template <class T>
 T Stack<T>::top() {
 	return items[SIZE - 1];
 }
 
 //Returns the total amount of items in the Stack
-template <typename T>
+template <class T>
 int Stack<T>::length() {
 	return index;
 }
 
 //Sets the stack to empty
-template <typename T>
+template <class T>
 void Stack<T>::emptyStack() {
 	index = 0;
 }
