@@ -84,8 +84,10 @@ void round(int& turns) {
 	Card computerCard = ComputerHand.dequeue();
 	// show player their card and give them their options (stack or play)
 	int playOption = 0;
- 	std::cout << playerCard.display()<<std::endl;
+ 	std::cout << "Your card is the " << playerCard.display()<<std::endl;
 	std::cout << "1. Play\n2. Stack" << std::endl;
+	std::cout << "	Player hand size: " << PlayerHand.length() << std::endl;
+	std::cout << "	Computer hand size: " << ComputerHand.length() << std::endl;
 	std::cin >> playOption;
 
 	while (!(playOption == 1 || playOption == 2)) {
@@ -94,12 +96,16 @@ void round(int& turns) {
 	}
 
 	if (playOption == 2) {
-		WarStack.push(playerCard);
+		Sidepile.push(playerCard);
 		playerCard = PlayerHand.dequeue(); //new card that must be played
-		std::cout << "Player has stacked their card.\nThe new card is " << playerCard.display() << std::endl;
-		std::cout << "The size of the stack is: " << WarStack.length() << std::endl;
+		std::cout << "Player has stacked their card." << std::endl;
+		if (Sidepile.length() > 1){
+			std::cout << "There are now " << Sidepile.length() << " cards in your side pile" << std::endl;
+		} else {
+			std::cout << "There is now " << Sidepile.length() << " card in your side pile" << std::endl;
+		}
+		std::cout << "The new card is the " << playerCard.display() << std::endl;
 	}
-
 	if (playerCard.cardVal > computerCard.cardVal) {
 		PlayerHand.enqueue(playerCard);
 		PlayerHand.enqueue(computerCard);
@@ -109,7 +115,6 @@ void round(int& turns) {
 		ComputerHand.enqueue(playerCard);
 		ComputerHand.enqueue(computerCard);
 		std::cout << "Computer had a " << computerCard.display() << ". Computer gets the cards. " << std::endl;
-
 	}
 	else { //if the cards are equal //this can be looped somehow
 		WarStack.push(playerCard);
@@ -239,42 +244,45 @@ int main() {
 	//playerHand = PlayerHand();
 	//computerHand = ComputerHand();
 	//sidePile = Sidepile();
-
-	initCardPile(Drawpile); 
-
 	try {
+		initCardPile(Drawpile); 
+
+	
 		shuffle(Drawpile, PlayerHand, ComputerHand);//shuffle function
-		
 		/*
+		int count = 1;
 		std::cout << "Player Hand: " << std::endl;
 		std::cout << "Size: " << PlayerHand.length() << std::endl;
 		while (!PlayerHand.isEmpty()) {
-			std::cout << PlayerHand.dequeue().display() << std::endl;
+			std::cout << count << ": " << PlayerHand.dequeue().display() << std::endl;
+			count++;
 		}
 
+		count = 1;
 		std::cout << "\nComputer Hand: " << std::endl;
 		std::cout << "Size: " << ComputerHand.length() << std::endl;
 		while (!ComputerHand.isEmpty()) {
-			std::cout << ComputerHand.dequeue().display() << std::endl;
+			std::cout << count << ": " << ComputerHand.dequeue().display() << std::endl;
+			count++;
 		}
 		*/
+	
+
+		bool handIsEmpty = false;
+		int turns = 0;
+
+		while (!handIsEmpty) {
+			std::cout << "Round " << turns << std::endl;
+			round(turns);
+			if (PlayerHand.isEmpty() || ComputerHand.isEmpty()) {
+				handIsEmpty = true;
+				break;
+			}
+		}
 	}
 	catch (Exception& e) {
 		std::cout << e.errorMessage << " : " << e.errorNumber << std::endl;
 	}
-
-	bool handIsEmpty = false;
-	int turns = 0;
-
-	while (!handIsEmpty) {
-		std::cout << "Round " << turns << std::endl;
-		round(turns);
-		if (PlayerHand.isEmpty() || ComputerHand.isEmpty()) {
-			handIsEmpty = true;
-			break;
-		}
-	}
-
 
 	return 0;
 }
