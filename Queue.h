@@ -24,6 +24,7 @@ public:
 	T peek();                //Look at the top item of the Queue
 	bool isEmpty();          //Check if the Queue is empty
 	int length();            //Returns the total amount of items in the Queue
+	void displayQueue();
 
 };
 

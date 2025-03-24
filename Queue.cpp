@@ -66,5 +66,15 @@ int Queue<T>::length() {
     return size;
 }
 
+//Display all of queue without removing items from the queue
+template <class T>
+void Queue<T>::displayQueue() {
+    Node<T> *temp = first;
+    for (int i{}; i < length(); i++){
+        std::cout << "  " << i+1 << "." << temp->data.display() << std::endl;
+        temp = temp->next;
+    }
+}
+
 //Base template
 template class Queue<Card>;

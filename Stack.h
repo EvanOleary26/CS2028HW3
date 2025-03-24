@@ -30,6 +30,7 @@ public:
 	T top();				//Returns the top item in the Stack
 	int length();			//Returns the total amount of items in the Stack
 	void emptyStack();		//Sets the stack to empty
+	void displayStack();
 };
 
 #endif

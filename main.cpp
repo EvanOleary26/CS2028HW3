@@ -13,7 +13,7 @@ Stack<Card> Sidepile{};
 Queue<Card> PlayerHand{};
 Queue<Card> ComputerHand{};
 List<Card> Drawpile{};
-Stack<Card> WarStack(10);
+Stack<Card> WarStack(8);
 
 void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
 	if (PlayerHand.length() < 3) {
@@ -54,7 +54,15 @@ void war() { //just now realized the contest is supposed to be the sum of the ca
 	Card computerCard1 = ComputerHand.dequeue();
 	Card computerCard2 = ComputerHand.dequeue();
 	Card computerCard3 = ComputerHand.dequeue();
+	/*
+	std::cout << "	Player card 1: " << playerCard1.display() << std::endl;
+	std::cout << "	Player card 2: " << playerCard2.display() << std::endl;
+	std::cout << "	Player card 3: " << playerCard3.display() << std::endl;
 
+	std::cout << "	Computer card 1: " << computerCard1.display() << std::endl;
+	std::cout << "	Computer card 2: " << computerCard2.display() << std::endl;
+	std::cout << "	Computer card 3: " << computerCard3.display() << std::endl;
+	*/
 	int ComputerCardSum = computerCard1.cardVal + computerCard2.cardVal + computerCard3.cardVal;
 	int PlayerCardSum = playerCard1.cardVal + playerCard2.cardVal + playerCard3.cardVal;
 
@@ -65,17 +73,24 @@ void war() { //just now realized the contest is supposed to be the sum of the ca
 	WarStack.push(computerCard2);
 	WarStack.push(computerCard3);
 
+
+	//WarStack.displayStack();
+
 	if (PlayerCardSum > ComputerCardSum) {
 		//player wins war
-		while (!(WarStack.length() == 0)) {
+		while (WarStack.length() != 0) {
+			//std::cout << "		Adding " << WarStack.top().display() << " to the player's hand." << std::endl;
 			PlayerHand.enqueue(WarStack.pop());
 		}
+		std::cout << "Congrats you won the war!" << std::endl;
 	}
 	else {
 		//computer wins war
-		while (!(WarStack.length() == 0)) {
+		while (WarStack.length() != 0) {
+			//std::cout << "		Adding " << WarStack.top().display() << " to the computer's hand." << std::endl;
 			ComputerHand.enqueue(WarStack.pop());
 		}
+		std::cout << "The Computer won the war." << std::endl;
 	}
 }
 
@@ -85,14 +100,17 @@ void round(int& turns) {
 	// show player their card and give them their options (stack or play)
 	int playOption = 0;
  	std::cout << "Your card is the " << playerCard.display()<<std::endl;
-	std::cout << "1. Play\n2. Stack" << std::endl;
+	std::cout << "1. Play\n2. Stack\n3. Show Deck" << std::endl;
 	std::cout << "	Player hand size: " << PlayerHand.length() << std::endl;
 	std::cout << "	Computer hand size: " << ComputerHand.length() << std::endl;
 	std::cin >> playOption;
 
-	while (!(playOption == 1 || playOption == 2)) {
+	while (!(playOption == 1 || playOption == 2 || playOption == 3)) {
 		std::cout << "Please enter a valid option" << std::endl;
 		std::cin >> playOption;
+	}
+	if (playOption == 3) {
+		PlayerHand.displayQueue();
 	}
 
 	if (playOption == 2) {

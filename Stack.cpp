@@ -17,7 +17,9 @@ void Stack<T>::push(T inVal) {
 template <class T>
 T Stack<T>::pop() {
 	if (index > 0) {
-		return items[index--];
+		T hold = items[index - 1];
+		index--;
+		return hold;
 	}
 	else {
 		throw Exception(0, "Stack Underflow");
@@ -27,7 +29,7 @@ T Stack<T>::pop() {
 //Returns the top item in the Stack
 template <class T>
 T Stack<T>::top() {
-	return items[SIZE - 1];
+	return items[index - 1];
 }
 
 //Returns the total amount of items in the Stack
@@ -42,5 +44,12 @@ void Stack<T>::emptyStack() {
 	index = 0;
 }
 
+//display stack
+template <class T>
+void Stack<T>::displayStack() {
+	for (int i = index; i > 0; i--) {
+		std::cout << "	" << i << "." << items[i - 1] << std::endl;
+	}
+}
 //Base templates 
 template class Stack<Card>;
