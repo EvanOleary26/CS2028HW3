@@ -44,12 +44,18 @@ void Stack<T>::emptyStack() {
 	index = 0;
 }
 
-//display stack
+
+//See if stack is full 
 template <class T>
-void Stack<T>::displayStack() {
-	for (int i = index; i > 0; i--) {
-		std::cout << "	" << i << "." << items[i - 1] << std::endl;
-	}
+bool Stack<T>::isFull() {
+	return index == SIZE;
 }
+
+//See if stack is empty
+template <class T>
+bool Stack<T>::isEmpty() {
+	return index == 0;
+}
+
 //Base templates 
 template class Stack<Card>;

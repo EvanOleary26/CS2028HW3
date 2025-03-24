@@ -13,7 +13,7 @@ Stack<Card> Sidepile{};
 Queue<Card> PlayerHand{};
 Queue<Card> ComputerHand{};
 List<Card> Drawpile{};
-Stack<Card> WarStack(8);
+Stack<Card> WarStack(10);
 
 void war() { //just now realized the contest is supposed to be the sum of the cards. should be an easy fix but takes a tad bit of editing
 	if (PlayerHand.length() < 3) {
@@ -96,47 +96,90 @@ void war() { //just now realized the contest is supposed to be the sum of the ca
 
 void round(int& turns) {
 	Card playerCard = PlayerHand.dequeue();
+	Card playerCard2;
 	Card computerCard = ComputerHand.dequeue();
+
+	int playerScore{};
 	// show player their card and give them their options (stack or play)
 	int playOption = 0;
  	std::cout << "Your card is the " << playerCard.display()<<std::endl;
-	std::cout << "1. Play\n2. Stack\n3. Show Deck" << std::endl;
+	std::cout << "1. Play current card\n";
+
+	if (!Sidepile.isFull()) {
+		//Side pile is not full
+		std::cout << "2. Add to side pile\n";
+	}
+	if (!Sidepile.isEmpty()) {
+		//Side pile is not empty
+		std::cout << "3. Play top card of side pile\n";
+	}
+
 	std::cout << "	Player hand size: " << PlayerHand.length() << std::endl;
 	std::cout << "	Computer hand size: " << ComputerHand.length() << std::endl;
+
 	std::cin >> playOption;
 
-	while (!(playOption == 1 || playOption == 2 || playOption == 3)) {
+	while (playOption < 0 && playOption > 4) {
 		std::cout << "Please enter a valid option" << std::endl;
 		std::cin >> playOption;
 	}
-	if (playOption == 3) {
+	//set playerScore if the player chooses 1
+	playerScore = playerCard.cardVal;
+
+	if (playOption == 4) {
 		PlayerHand.displayQueue();
 	}
 
 	if (playOption == 2) {
+		//Add to side pile
 		Sidepile.push(playerCard);
 		playerCard = PlayerHand.dequeue(); //new card that must be played
-		std::cout << "Player has stacked their card." << std::endl;
-		if (Sidepile.length() > 1){
+		std::cout << "Player has added the " << Sidepile.top().display() <<  " to their side pile." << std::endl;
+		if (Sidepile.length() > 1 || Sidepile.length() == 0){
 			std::cout << "There are now " << Sidepile.length() << " cards in your side pile" << std::endl;
 		} else {
 			std::cout << "There is now " << Sidepile.length() << " card in your side pile" << std::endl;
 		}
 		std::cout << "The new card is the " << playerCard.display() << std::endl;
+		playerScore = playerCard.cardVal;
+	} else if (playOption == 3) {
+		//Play top card of side pile
+		playerCard2 = Sidepile.pop();
+
+		std::cout << "You played the " << playerCard.display() << " and the " << playerCard2.display() << std::endl;
+
+		playerScore = playerCard.cardVal + playerCard2.cardVal;
+		if (Sidepile.length() > 1 || Sidepile.length() == 0){
+			std::cout << "There are now " << Sidepile.length() << " cards in your side pile" << std::endl;
+		} else {
+			std::cout << "There is now " << Sidepile.length() << " card in your side pile" << std::endl;
+		}
 	}
-	if (playerCard.cardVal > computerCard.cardVal) {
+
+	if (playerScore > computerCard.cardVal) {
 		PlayerHand.enqueue(playerCard);
 		PlayerHand.enqueue(computerCard);
+		if (playOption == 3) {
+			//If the player did use their side pile
+			PlayerHand.enqueue(playerCard2);
+		}
 		std::cout << "Computer had a " << computerCard.display() << ". Player gets the cards. " << std::endl;
-	}
-	else if (playerCard.cardVal < computerCard.cardVal) {
+	} else if (playerScore < computerCard.cardVal) {
 		ComputerHand.enqueue(playerCard);
 		ComputerHand.enqueue(computerCard);
+		if (playOption == 3) {
+			//If the player did use their side pile
+			ComputerHand.enqueue(playerCard2);
+		}
 		std::cout << "Computer had a " << computerCard.display() << ". Computer gets the cards. " << std::endl;
 	}
 	else { //if the cards are equal //this can be looped somehow
 		WarStack.push(playerCard);
 		WarStack.push(computerCard);
+		if (playOption == 3) {
+			//If the player did use their side pile
+			WarStack.push(playerCard2);
+		}
 		std::cout << "Computer had a " << computerCard.display() << ". WAR!!. " << std::endl;
 		war();
 	}
@@ -290,12 +333,19 @@ int main() {
 		int turns = 0;
 
 		while (!handIsEmpty) {
-			std::cout << "Round " << turns << std::endl;
+			std::cout << "\nRound " << turns << std::endl;
 			round(turns);
 			if (PlayerHand.isEmpty() || ComputerHand.isEmpty()) {
 				handIsEmpty = true;
 				break;
 			}
+		}
+		if (PlayerHand.isEmpty()) {
+			//Player ran out of cards the Computer won
+			std::cout << "The Computer won...better luck next time" << std::endl;
+		} else {
+			//Player won
+			std::cout << "Congratulations! You Won!!" << std::endl;
 		}
 	}
 	catch (Exception& e) {
