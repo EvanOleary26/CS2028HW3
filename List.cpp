@@ -41,7 +41,7 @@ T List<T>::GetItem(T target) {
         return retVal;
     }
 
-    while ((temp->next != nullptr) && (temp->next->data != target)) {
+    while (!((temp->next == nullptr) || (temp->next->data == target))) {
         temp = temp->next;
     }
 

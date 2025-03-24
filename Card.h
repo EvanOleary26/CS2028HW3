@@ -4,55 +4,48 @@
 #include <iostream>
 
 class Card {
-    public:
-        std::string cardType;
-        std::string suit;
-        int cardVal = 0;
+public:
+    std::string cardType;
+    std::string suit;
+    int cardVal = 0;
 
-        //Constructors
-        Card() : cardType(""), suit(""), cardVal(0) {};
-        Card(std::string inType, std::string inSuit, int inCardVal) : cardType(inType), suit(inSuit), cardVal(inCardVal) {}; 
-        
-        //Functions
-        std::string getCardType() { return cardType; }
-        std::string getSuit() { return suit; }
-        int getCardVal() { return cardVal; }
+    //Constructors
+    Card() : cardType(""), suit(""), cardVal(0) {};
+    Card(std::string inType, std::string inSuit, int inCardVal) : cardType(inType), suit(inSuit), cardVal(inCardVal) {};
 
-        std::string display() const {
-            return cardType + " of " + suit;
-        }
+    //Functions
+    std::string getCardType() { return cardType; }
+    std::string getSuit() { return suit; }
+    int getCardVal() { return cardVal; }
 
-        // Overload the << operator for Card
-        friend std::ostream& operator<<(std::ostream& os, const Card& card) {
-            card.display(); // Call display() to output card details
-            return os;
-        }
+    std::string display() const {
+        return cardType + " of " + suit;
+    }
 
-        bool operator>(const Card& right) const{
-            return this->cardVal > right.cardVal;
-        }
-        bool operator<(const Card& right) const{
-            return this->cardVal < right.cardVal;
-        }
-        bool operator==(const Card& right) const{
-            return this->cardVal == right.cardVal;
-        }
-        bool operator==(int right) const{
-            return this->cardVal == right;
-        }
-        bool operator!=(int right) const{
-            return this->cardVal != right;
-        }
-        
+    // Overload the << operator for Card
+    friend std::ostream& operator<<(std::ostream& os, const Card& card) {
+        card.display(); // Call display() to output card details
+        return os;
+    }
+
+    bool operator>(const Card& right) const {
+        return this->cardVal > right.cardVal;
+    }
+    bool operator<(const Card& right) const {
+        return this->cardVal < right.cardVal;
+    }
+    bool operator==(const Card& right) const {
+        return this->cardVal == right.cardVal;
+    }
+    bool operator==(int right) const {
+        return this->cardVal == right;
+    }
+    bool operator!=(int right) const {
+        return this->cardVal != right;
+    }
+
 
 };
-
-
-
-
-
-
-
 
 
 #endif

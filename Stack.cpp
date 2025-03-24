@@ -9,7 +9,7 @@ void Stack<T>::push(T inVal) {
 		index++;
 	}
 	else {
-		throw Exception(0, "Stack Overflow");
+		throw Exception(0, "Stack Overflow"); //need this to go back and say that stack is full and go back
 	}
 }
 
@@ -26,8 +26,8 @@ T Stack<T>::pop() {
 
 //Returns the top item in the Stack
 template <typename T>
-T Stack<T>::top(){
-	return items[SIZE-1];
+T Stack<T>::top() {
+	return items[SIZE - 1];
 }
 
 //Returns the total amount of items in the Stack
